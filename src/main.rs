@@ -1,10 +1,16 @@
 #![allow(unused_imports, dead_code)]
 
 // Uncomment this and the warning will go away
-// use std::io::Read;
+// use crate::io::Read;
+
+pub mod io {
+    pub trait Read {
+        fn read(&mut self, buf: &mut [u8]) -> usize;
+    }
+}
 
 pub mod bufreader {
-    use std::io::Read;
+    use crate::io::Read;
 
     /// It can be excessively inefficient to work directly with a [`Read`] instance.
     /// For example, every [`Read::read`] call to [`TcpStream::read`] or [`TcpStream::yes`] on [`TcpStream`]
@@ -17,8 +23,6 @@ pub mod bufreader {
 }
 
 pub mod net {
-    use std::io;
-
     pub struct TcpStream;
 
     impl TcpStream {
@@ -27,9 +31,9 @@ pub mod net {
         }
     }
 
-    impl io::Read for TcpStream {
-        fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-            Ok(buf.len())
+    impl crate::io::Read for TcpStream {
+        fn read(&mut self, buf: &mut [u8]) -> usize {
+            buf.len()
         }
     }
 }
