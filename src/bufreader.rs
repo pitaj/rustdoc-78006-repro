@@ -5,7 +5,7 @@ use crate::io::{self, BufRead, Initializer, IoSliceMut, Read, Seek, SeekFrom, DE
 /// The `BufReader<R>` struct adds buffering to any reader.
 ///
 /// It can be excessively inefficient to work directly with a [`Read`] instance.
-/// For example, every call to [`read`][`TcpStream::read`] on [`TcpStream`]
+/// For example, every call to [`read`][`TcpStream::read`] or [`TcpStream::yes`] on [`TcpStream`]
 /// results in a system call. A `BufReader<R>` performs large, infrequent reads on
 /// the underlying [`Read`] and maintains an in-memory buffer of the results.
 ///
@@ -21,6 +21,7 @@ use crate::io::{self, BufRead, Initializer, IoSliceMut, Read, Seek, SeekFrom, DE
 /// unwrapping the `BufReader<R>` with [`BufReader::into_inner`] can also cause
 /// data loss.
 ///
+/// [`TcpStream::yes`]: crate::net::TcpStream::yes
 /// [`TcpStream::read`]: crate::net::TcpStream::read
 /// [`TcpStream`]: crate::net::TcpStream
 ///
