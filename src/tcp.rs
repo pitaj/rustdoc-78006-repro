@@ -1,13 +1,47 @@
-#![deny(unsafe_op_in_unsafe_fn)]
+use std::io;
+
+pub struct TcpStream;
+
+impl TcpStream {
+    fn yes() -> bool {
+        true
+    }
+}
+
+impl io::Read for TcpStream {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        // self.0.read(buf)
+        Ok(0)
+    }
+
+    fn read_vectored(&mut self, bufs: &mut [io::IoSliceMut<'_>]) -> io::Result<usize> {
+        // self.0.read_vectored(bufs)
+        Ok(0)
+    }
+
+    #[inline]
+    fn is_read_vectored(&self) -> bool {
+        // self.0.is_read_vectored()
+        false
+    }
+
+    #[inline]
+    unsafe fn initializer(&self) -> io::Initializer {
+        // SAFETY: Read is guaranteed to work on uninitialized memory
+        unsafe { io::Initializer::nop() }
+    }
+}
+
+// #![deny(unsafe_op_in_unsafe_fn)]
 
 // #[cfg(all(test, not(any(target_os = "cloudabi", target_os = "emscripten"))))]
 // mod tests;
 
 // use crate::io::prelude::*;
-use crate::io::{Read, Write};
+// use crate::io::{Read, Write};
 
 // use crate::fmt;
-use crate::io::{self, Initializer, IoSlice, IoSliceMut};
+// use crate::io::{self, Initializer, IoSlice, IoSliceMut};
 // use crate::net::{Shutdown, SocketAddr, ToSocketAddrs};
 // struct Shutdown;
 // struct SocketAddr;
@@ -58,13 +92,13 @@ use crate::io::{self, Initializer, IoSlice, IoSliceMut};
 
 
 // pub struct TcpStream(net_imp::TcpStream);
-pub struct TcpStream;
+// pub struct TcpStream;
 
-impl TcpStream {
-    fn yes() -> bool {
-        true
-    }
-}
+// impl TcpStream {
+//     fn yes() -> bool {
+//         true
+//     }
+// }
 
 // /// A TCP socket server, listening for connections.
 // ///
@@ -582,29 +616,29 @@ impl TcpStream {
 // }
 
 // #[stable(feature = "rust1", since = "1.0.0")]
-impl Read for TcpStream {
-    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        // self.0.read(buf)
-        Ok(0)
-    }
+// impl Read for TcpStream {
+//     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+//         // self.0.read(buf)
+//         Ok(0)
+//     }
 
-    fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> io::Result<usize> {
-        // self.0.read_vectored(bufs)
-        Ok(0)
-    }
+//     fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> io::Result<usize> {
+//         // self.0.read_vectored(bufs)
+//         Ok(0)
+//     }
 
-    #[inline]
-    fn is_read_vectored(&self) -> bool {
-        // self.0.is_read_vectored()
-        false
-    }
+//     #[inline]
+//     fn is_read_vectored(&self) -> bool {
+//         // self.0.is_read_vectored()
+//         false
+//     }
 
-    #[inline]
-    unsafe fn initializer(&self) -> Initializer {
-        // SAFETY: Read is guaranteed to work on uninitialized memory
-        unsafe { Initializer::nop() }
-    }
-}
+//     #[inline]
+//     unsafe fn initializer(&self) -> Initializer {
+//         // SAFETY: Read is guaranteed to work on uninitialized memory
+//         unsafe { Initializer::nop() }
+//     }
+// }
 // #[stable(feature = "rust1", since = "1.0.0")]
 // impl Write for TcpStream {
 //     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
