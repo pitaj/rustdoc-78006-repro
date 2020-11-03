@@ -1,25 +1,37 @@
-// #![feature(seek_convenience, read_initializer, can_vector, unsafe_block_in_unsafe_fn)]
+#![allow(unused_imports, dead_code)]
 
-// #![allow(dead_code, unused_variables)]
+// Uncomment this and the warning will go away
+// use std::io::Read;
 
-// pub use std::cmp;
-// pub use std::fmt;
-// pub use std::time;
-// pub use std::convert;
-// pub use std::ffi;
-// pub use std::mem;
-// pub use std::ptr;
+pub mod bufreader {
+    use std::io::Read;
 
-// pub mod io {
-//     pub use std::io::*;
-//     pub const DEFAULT_BUF_SIZE: usize = 8 * 1024;
-// }
+    /// It can be excessively inefficient to work directly with a [`Read`] instance.
+    /// For example, every [`Read::read`] call to [`TcpStream::read`] or [`TcpStream::yes`] on [`TcpStream`]
+    ///
+    /// [`TcpStream::yes`]: crate::net::TcpStream::yes
+    /// [`TcpStream::read`]: crate::net::TcpStream::read
+    /// [`Read::read`]: Read::read
+    /// [`TcpStream`]: crate::net::TcpStream
+    pub struct BufReader;
+}
 
-mod bufreader;
-mod tcp;
-mod net {
-    pub use crate::tcp::TcpStream;
-    // pub use std::net::{Shutdown, SocketAddr, ToSocketAddrs};
+pub mod net {
+    use std::io;
+
+    pub struct TcpStream;
+
+    impl TcpStream {
+        fn yes() -> bool {
+            true
+        }
+    }
+
+    impl io::Read for TcpStream {
+        fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+            Ok(buf.len())
+        }
+    }
 }
 
 fn main() {
